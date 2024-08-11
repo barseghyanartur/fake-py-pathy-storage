@@ -79,7 +79,7 @@ azure = [
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["fakepy_pathy_storage", "fakepy.pathy_storage"]
+include = ["fakepy.pathy_storage"]
 namespaces = true
 
 # Build system information below.
@@ -173,7 +173,6 @@ addopts = [
     "-ra",
     "-vvv",
     "-q",
-   "--cov=fakepy_pathy_storage",
    "--cov=pathy_storage",
    "--ignore=.tox",
    "--ignore=requirements",
