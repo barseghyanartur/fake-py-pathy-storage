@@ -72,7 +72,7 @@ Local cloud-alike file system storage
 .. code-block:: python
     :name: test_pathy_file_system_storage
 
-    from fakepy import FAKER
+    from fake import FAKER
     from fakepy.pathy_storage.cloud import PathyFileSystemStorage
 
     STORAGE = PathyFileSystemStorage(
@@ -90,7 +90,7 @@ AWS S3
 
 .. code-block:: python
 
-    from fakepy import FAKER
+    from fake import FAKER
     from fakepy.pathy_storage.aws_s3 import AWSS3Storage
 
     STORAGE = AWSS3Storage(
@@ -114,7 +114,7 @@ Google Cloud Storage
 --------------------
 .. code-block:: python
 
-    from fakepy import FAKER
+    from fake import FAKER
     from fakepy.pathy_storage.google_cloud_storage import GoogleCloudStorage
 
     STORAGE = GoogleCloudStorage(
@@ -131,7 +131,7 @@ Azure Cloud Storage
 -------------------
 .. code-block:: python
 
-    from fakepy import FAKER
+    from fake import FAKER
     from fakepy.pathy_storage.azure_cloud_storage import AzureCloudStorage
 
     STORAGE = AzureCloudStorage(
