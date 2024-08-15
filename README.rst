@@ -12,7 +12,7 @@ fake-py-pathy-storage
 
 .. _fake-py-pathy-storage: https://github.com/barseghyanartur/fake-py-pathy-storage/
 .. _Read the Docs: http://fake-py-pathy-storage.readthedocs.io/
-.. _Contributor guidelines: https://fakepy.readthedocs.io/en/latest/contributor_guidelines.html
+.. _Contributor guidelines: https://fake-py-pathy-storage.readthedocs.io/en/latest/contributor_guidelines.html
 
 `Pathy`_ storage for `fake.py`_.
 
