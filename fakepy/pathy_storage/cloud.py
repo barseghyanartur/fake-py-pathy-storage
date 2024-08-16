@@ -9,7 +9,10 @@ from pathy import Pathy
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2024 Artur Barseghyan"
 __license__ = "MIT"
-__all__ = ("CloudStorage",)
+__all__ = (
+    "CloudStorage",
+    "PathyFileSystemStorage",
+)
 
 DEFAULT_ROOT_PATH = "tmp"
 DEFAULT_REL_PATH = "tmp"
