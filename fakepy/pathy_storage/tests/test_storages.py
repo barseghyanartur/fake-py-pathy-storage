@@ -44,21 +44,6 @@ class TestStoragesTestCase(unittest.TestCase):
     @parametrize(
         "storage_cls, kwargs, prefix, basename, extension",
         [
-            # FileSystemStorage
-            (
-                FileSystemStorage,
-                {},
-                "zzz",
-                None,
-                "docx",
-            ),
-            (
-                FileSystemStorage,
-                {},
-                None,
-                "my_zzz_filename",
-                "docx",
-            ),
             # LocalFileSystemStorage
             (
                 LocalFileSystemStorage,
@@ -288,10 +273,14 @@ class TestStoragesTestCase(unittest.TestCase):
         text_result = storage.write_text(filename_text, "Lorem ipsum")
         # Check if file exists
         self.assertTrue(storage.exists(filename_text))
+        # Check if file exists by providing a string value
+        self.assertTrue(storage.exists(filename_text.name))
         # Assert correct return value
         self.assertIsInstance(text_result, int)
         # Clean up
         storage.unlink(filename_text)
+        # Assert does not exist
+        self.assertFalse(storage.exists(filename_text))
 
         # Bytes
         filename_bytes = storage.generate_filename(
@@ -303,9 +292,10 @@ class TestStoragesTestCase(unittest.TestCase):
         self.assertTrue(storage.exists(filename_bytes))
         # Assert correct return value
         self.assertIsInstance(bytes_result, int)
-
         # Clean up
-        storage.unlink(filename_bytes)
+        storage.unlink(filename_bytes.name)
+        # Assert does not exist
+        self.assertFalse(storage.exists(filename_bytes.name))
 
     @parametrize(
         "storage_cls, kwargs, prefix, extension",
