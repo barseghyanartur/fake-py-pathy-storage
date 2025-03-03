@@ -273,6 +273,10 @@ class TestStoragesTestCase(unittest.TestCase):
         text_result = storage.write_text(filename_text, "Lorem ipsum")
         # Check if file exists
         self.assertTrue(storage.exists(filename_text))
+        # Write to the text file by string value
+        text_result = storage.write_text(filename_text.name, "Lorem ipsum")
+        # Check if file exists by string value
+        self.assertTrue(storage.exists(filename_text.name))
         # Check if file exists by providing a string value
         self.assertTrue(storage.exists(filename_text.name))
         # Assert correct return value
@@ -290,6 +294,10 @@ class TestStoragesTestCase(unittest.TestCase):
         bytes_result = storage.write_bytes(filename_bytes, b"Lorem ipsum")
         # Check if file exists
         self.assertTrue(storage.exists(filename_bytes))
+        # Write to bytes file by string value
+        bytes_result = storage.write_bytes(filename_bytes.name, b"Lorem ipsum")
+        # Check if file exists by string value
+        self.assertTrue(storage.exists(filename_bytes.name))
         # Assert correct return value
         self.assertIsInstance(bytes_result, int)
         # Clean up
