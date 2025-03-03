@@ -18,7 +18,7 @@ are used for versioning (schema follows below):
 
 0.1.2
 -----
-2025-03-03
+2025-03-04
 
 - Minor fixes.
 
