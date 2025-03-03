@@ -305,6 +305,42 @@ class TestStoragesTestCase(unittest.TestCase):
         # Assert does not exist
         self.assertFalse(storage.exists(filename_bytes.name))
 
+    def test_relpath_and_abspath(self):
+        use_fs(Path(tempfile.gettempdir()))
+        use_fs_cache()
+        bucket_name = "testing"
+
+        storage = LocalFileSystemStorage(
+            bucket_name=bucket_name,
+            root_path="",
+            rel_path="",
+        )
+        filename = storage.generate_filename(extension="txt")
+        # Test relpath
+        self.assertEqual(storage.relpath(filename), filename.name)
+        # Test abspath
+        self.assertEqual(
+            storage.abspath(filename),
+            f"file://{bucket_name}/{filename.name}",
+        )
+
+        storage_2 = LocalFileSystemStorage(
+            bucket_name=bucket_name,
+            root_path="root_tmp",
+            rel_path="rel_tmp",
+        )
+        filename_2 = storage.generate_filename(extension="txt")
+        # Test relpath
+        self.assertEqual(
+            storage_2.relpath(filename_2.name),
+            f"rel_tmp/{filename_2.name}",
+        )
+        # Test abspath
+        self.assertEqual(
+            storage_2.abspath(filename_2.name),
+            f"file://{bucket_name}/root_tmp/rel_tmp/{filename_2.name}",
+        )
+
     @parametrize(
         "storage_cls, kwargs, prefix, extension",
         [
