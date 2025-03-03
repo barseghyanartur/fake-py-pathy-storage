@@ -5,10 +5,11 @@ from fake import BaseStorage
 from pathy import Pathy
 
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
-__copyright__ = "2024 Artur Barseghyan"
+__copyright__ = "2024-2025 Artur Barseghyan"
 __license__ = "MIT"
 __all__ = (
     "CloudStorage",
+    "LocalFileSystemStorage",
     "PathyFileSystemStorage",
 )
 
@@ -24,9 +25,9 @@ class CloudStorage(BaseStorage):
     .. code-block:: python
 
         from fake import FAKER
-        from fakepy.pathy_storage import PathyFileSystemStorage
+        from fakepy.pathy_storage import LocalFileSystemStorage
 
-        storage = PathyStorage()
+        storage = LocalFileSystemStorage()
         docx_file = FAKER.docx_file(storage=storage)
 
     Initialization with params:
@@ -34,9 +35,9 @@ class CloudStorage(BaseStorage):
     .. code-block:: python
 
         from fake import FAKER
-        from fakepy.pathy_storage import PathyFileSystemStorage
+        from fakepy.pathy_storage import LocalFileSystemStorage
 
-        storage = PathyFileSystemStorage()
+        storage = LocalFileSystemStorage()
         docx_file = storage.generate_filename(prefix="zzz_", extension="docx")
         storage.write_bytes(docx_file, FAKER.docx())
     """
@@ -109,54 +110,72 @@ class CloudStorage(BaseStorage):
 
     def write_text(
         self: "CloudStorage",
-        filename: Pathy,
+        filename: Union[Pathy, str],
         data: str,
         encoding: Optional[str] = None,
     ) -> int:
         """Write text."""
-        file = self.bucket / self.root_path / self.rel_path / filename
+        if isinstance(filename, str):
+            file = self.bucket / self.root_path / self.rel_path / filename
+        else:
+            file = filename
         return file.write_text(data, encoding)
 
     def write_bytes(
         self: "CloudStorage",
-        filename: Pathy,
+        filename: Union[Pathy, str],
         data: bytes,
     ) -> int:
         """Write bytes."""
-        file = self.bucket / self.root_path / self.rel_path / filename
+        if isinstance(filename, str):
+            file = self.bucket / self.root_path / self.rel_path / filename
+        else:
+            file = filename
         return file.write_bytes(data)
 
     def exists(self: "CloudStorage", filename: Union[Pathy, str]) -> bool:
         """Check if file exists."""
         if isinstance(filename, str):
-            filename = self.bucket / self.root_path / filename
-        return filename.exists()
+            file = self.bucket / self.root_path / self.rel_path / filename
+        else:
+            file = filename
+        return file.exists()
 
-    def relpath(self: "CloudStorage", filename: Pathy) -> str:
+    def relpath(self: "CloudStorage", filename: Union[Pathy, str]) -> str:
         """Return relative path."""
-        return str(filename.relative_to(self.bucket / self.root_path))
+        if isinstance(filename, str):
+            file = self.bucket / self.root_path / self.rel_path / filename
+        else:
+            file = filename
+        return str(file.relative_to(self.bucket / self.root_path))
 
-    def abspath(self: "CloudStorage", filename: Pathy) -> str:
+    def abspath(self: "CloudStorage", filename: Union[Pathy, str]) -> str:
         """Return absolute path."""
-        return filename.as_uri()
+        if isinstance(filename, str):
+            file = self.bucket / self.root_path / self.rel_path / filename
+        else:
+            file = filename
+        return file.as_uri()
 
     def unlink(self: "CloudStorage", filename: Union[Pathy, str]) -> None:
         """Delete the file."""
         if isinstance(filename, str):
-            filename = self.bucket / self.root_path / filename
-        filename.unlink()
+            file = self.bucket / self.root_path / self.rel_path / filename
+        else:
+            file = filename
+        file.unlink()
 
 
-class PathyFileSystemStorage(CloudStorage):
-    """Pathy FileSystem Storage.
+class LocalFileSystemStorage(CloudStorage):
+    """Local FileSystem Storage.
 
     Usage example:
 
     .. code-block:: python
 
-        from fakepy.pathy_storage.cloud import PathyFileSystemStorage
+        from fakepy.pathy_storage.cloud import LocalFileSystemStorage
 
-        storage = PathyFileSystemStorage(bucket_name="artur-testing-1")
+        storage = LocalFileSystemStorage(bucket_name="artur-testing-1")
         file = storage.generate_filename(prefix="zzz_", extension="txt")
         storage.write_text(file, "Lorem ipsum")
         storage.write_bytes(file, b"Lorem ipsum")
@@ -164,5 +183,8 @@ class PathyFileSystemStorage(CloudStorage):
 
     schema: str = "file"
 
-    def authenticate(self: "PathyFileSystemStorage", **kwargs) -> None:
+    def authenticate(self: "LocalFileSystemStorage", **kwargs) -> None:
         """Authenticate. Does nothing."""
+
+
+PathyFileSystemStorage = LocalFileSystemStorage

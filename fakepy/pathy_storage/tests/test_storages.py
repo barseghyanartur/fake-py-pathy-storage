@@ -10,12 +10,12 @@ from pathy import use_fs, use_fs_cache
 
 from ..aws_s3 import AWSS3Storage
 from ..azure_cloud_storage import AzureCloudStorage
-from ..cloud import CloudStorage, PathyFileSystemStorage
+from ..cloud import CloudStorage, LocalFileSystemStorage
 from ..google_cloud_storage import GoogleCloudStorage
 from .data import GCS_CREDENTIALS_JSON
 
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
-__copyright__ = "2024 Artur Barseghyan"
+__copyright__ = "2024-2025 Artur Barseghyan"
 __license__ = "MIT"
 __all__ = ("TestStoragesTestCase",)
 
@@ -59,9 +59,9 @@ class TestStoragesTestCase(unittest.TestCase):
                 "my_zzz_filename",
                 "docx",
             ),
-            # PathyFileSystemStorage
+            # LocalFileSystemStorage
             (
-                PathyFileSystemStorage,
+                LocalFileSystemStorage,
                 {
                     "bucket_name": "testing",
                     "rel_path": "tmp",
@@ -71,10 +71,32 @@ class TestStoragesTestCase(unittest.TestCase):
                 "docx",
             ),
             (
-                PathyFileSystemStorage,
+                LocalFileSystemStorage,
                 {
                     "bucket_name": "testing",
                     "rel_path": "tmp",
+                },
+                None,
+                "my_zzz_filename",
+                "docx",
+            ),
+            (
+                LocalFileSystemStorage,
+                {
+                    "bucket_name": "testing",
+                    "root_path": "root_tmp",
+                    "rel_path": "rel_tmp",
+                },
+                "zzz",
+                None,
+                "docx",
+            ),
+            (
+                LocalFileSystemStorage,
+                {
+                    "bucket_name": "testing",
+                    "root_path": "root_tmp",
+                    "rel_path": "rel_tmp",
                 },
                 None,
                 "my_zzz_filename",
@@ -100,6 +122,36 @@ class TestStoragesTestCase(unittest.TestCase):
                 {
                     "bucket_name": "testing",
                     "rel_path": "tmp",
+                    "credentials": {
+                        "key_id": "key",
+                        "key_secret": "key_secret",
+                    },
+                },
+                None,
+                "my_zzz_filename",
+                "docx",
+            ),
+            (
+                AWSS3Storage,
+                {
+                    "bucket_name": "testing",
+                    "root_path": "root_tmp",
+                    "rel_path": "rel_tmp",
+                    "credentials": {
+                        "key_id": "key",
+                        "key_secret": "key_secret",
+                    },
+                },
+                "zzz",
+                None,
+                "docx",
+            ),
+            (
+                AWSS3Storage,
+                {
+                    "bucket_name": "testing",
+                    "root_path": "root_tmp",
+                    "rel_path": "rel_tmp",
                     "credentials": {
                         "key_id": "key",
                         "key_secret": "key_secret",
@@ -136,6 +188,34 @@ class TestStoragesTestCase(unittest.TestCase):
                 "my_zzz_filename",
                 "docx",
             ),
+            (
+                GoogleCloudStorage,
+                {
+                    "bucket_name": "testing",
+                    "root_path": "root_tmp",
+                    "rel_path": "rel_tmp",
+                    "credentials": {
+                        "json_file_path": GCS_CREDENTIALS_JSON_FILENAME,
+                    },
+                },
+                "zzz",
+                None,
+                "docx",
+            ),
+            (
+                GoogleCloudStorage,
+                {
+                    "bucket_name": "testing",
+                    "root_path": "root_tmp",
+                    "rel_path": "rel_tmp",
+                    "credentials": {
+                        "json_file_path": GCS_CREDENTIALS_JSON_FILENAME,
+                    },
+                },
+                None,
+                "my_zzz_filename",
+                "docx",
+            ),
             # Azure Cloud Storage
             (
                 AzureCloudStorage,
@@ -153,6 +233,30 @@ class TestStoragesTestCase(unittest.TestCase):
                 {
                     "bucket_name": "testing",
                     "rel_path": "tmp",
+                    "credentials": {"connection_string": "abcd1234"},
+                },
+                None,
+                "my_zzz_filename",
+                "docx",
+            ),
+            (
+                AzureCloudStorage,
+                {
+                    "bucket_name": "testing",
+                    "root_path": "root_tmp",
+                    "rel_path": "rel_tmp",
+                    "credentials": {"connection_string": "abcd1234"},
+                },
+                "zzz",
+                None,
+                "docx",
+            ),
+            (
+                AzureCloudStorage,
+                {
+                    "bucket_name": "testing",
+                    "root_path": "root_tmp",
+                    "rel_path": "rel_tmp",
                     "credentials": {"connection_string": "abcd1234"},
                 },
                 None,
@@ -206,12 +310,22 @@ class TestStoragesTestCase(unittest.TestCase):
     @parametrize(
         "storage_cls, kwargs, prefix, extension",
         [
-            # PathyFileSystemStorage
+            # LocalFileSystemStorage
             (
-                PathyFileSystemStorage,
+                LocalFileSystemStorage,
                 {
                     "bucket_name": "testing",
                     "rel_path": "tmp",
+                },
+                "zzz",
+                "",
+            ),
+            (
+                LocalFileSystemStorage,
+                {
+                    "bucket_name": "testing",
+                    "root_path": "root_tmp",
+                    "rel_path": "rel_tmp",
                 },
                 "zzz",
                 "",
@@ -283,11 +397,11 @@ class TestStoragesTestCase(unittest.TestCase):
         filename = storage.generate_filename(prefix="", extension="tmp")
         self.assertTrue(storage.abspath(filename).startswith("/tmp/rel_tmp/"))
 
-    def test_pathy_file_system_storage_abspath(
+    def test_local_file_system_storage_abspath(
         self: "TestStoragesTestCase",
     ) -> None:
-        """Test `PathyFileSystemStorage` `abspath`."""
-        storage = PathyFileSystemStorage(
+        """Test `LocalFileSystemStorage` `abspath`."""
+        storage = LocalFileSystemStorage(
             bucket_name="faker-file-tmp",
             root_path="root_tmp",
             rel_path="rel_tmp",
@@ -299,11 +413,11 @@ class TestStoragesTestCase(unittest.TestCase):
             )
         )
 
-    def test_pathy_file_system_storage_unlink(
+    def test_local_file_system_storage_unlink(
         self: "TestStoragesTestCase",
     ) -> None:
-        """Test `PathyFileSystemStorage` `unlink`."""
-        storage = PathyFileSystemStorage(
+        """Test `LocalFileSystemStorage` `unlink`."""
+        storage = LocalFileSystemStorage(
             bucket_name="faker-file-tmp",
             root_path="root_tmp",
             rel_path="rel_tmp",

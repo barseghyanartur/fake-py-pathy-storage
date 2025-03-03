@@ -2,7 +2,7 @@
 name = "fake-py-pathy-storage"
 description = "Pathy storage for fake.py"
 readme = "README.rst"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
     "fake.py>=0.9.5",
     "pathy>=0.10.0,<0.11.0",
@@ -22,7 +22,6 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python",
     "Topic :: Software Development :: Testing",
