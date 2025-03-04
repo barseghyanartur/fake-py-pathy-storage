@@ -73,9 +73,9 @@ Local cloud-alike file system storage
     :name: test_pathy_file_system_storage
 
     from fake import FAKER
-    from fakepy.pathy_storage.cloud import PathyFileSystemStorage
+    from fakepy.pathy_storage.cloud import LocalFileSystemStorage
 
-    STORAGE = PathyFileSystemStorage(
+    STORAGE = LocalFileSystemStorage(
         bucket_name="bucket_name",
         root_path="tmp",  # Optional
         rel_path="sub-tmp",  # Optional
