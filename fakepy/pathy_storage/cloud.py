@@ -88,6 +88,21 @@ class CloudStorage(BaseStorage):
     def authenticate(self, *args, **kwargs):
         raise NotImplementedError("Method authenticate is not implemented!")
 
+    def _get_file(self: "CloudStorage", filename: Union[Pathy, str]) -> Pathy:
+        """Get file from path.
+
+        By concept, the path is always relative to the root directory, thus
+        `rel_path` + initial filename, when used in string representation.
+
+        :param filename: File name.
+        :return Pathy: File object.
+        """
+        if isinstance(filename, str):
+            file = self.bucket / self.root_path / filename
+        else:
+            file = filename
+        return file
+
     def generate_filename(
         self: "CloudStorage",
         extension: str,
@@ -115,10 +130,7 @@ class CloudStorage(BaseStorage):
         encoding: Optional[str] = None,
     ) -> int:
         """Write text."""
-        if isinstance(filename, str):
-            file = self.bucket / self.root_path / self.rel_path / filename
-        else:
-            file = filename
+        file = self._get_file(filename)
         return file.write_text(data, encoding)
 
     def write_bytes(
@@ -127,42 +139,27 @@ class CloudStorage(BaseStorage):
         data: bytes,
     ) -> int:
         """Write bytes."""
-        if isinstance(filename, str):
-            file = self.bucket / self.root_path / self.rel_path / filename
-        else:
-            file = filename
+        file = self._get_file(filename)
         return file.write_bytes(data)
 
     def exists(self: "CloudStorage", filename: Union[Pathy, str]) -> bool:
         """Check if file exists."""
-        if isinstance(filename, str):
-            file = self.bucket / self.root_path / self.rel_path / filename
-        else:
-            file = filename
+        file = self._get_file(filename)
         return file.exists()
 
-    def relpath(self: "CloudStorage", filename: Union[Pathy, str]) -> str:
+    def relpath(self: "CloudStorage", filename: Pathy) -> str:
         """Return relative path."""
-        if isinstance(filename, str):
-            file = self.bucket / self.root_path / self.rel_path / filename
-        else:
-            file = filename
+        file = self._get_file(filename)
         return str(file.relative_to(self.bucket / self.root_path))
 
-    def abspath(self: "CloudStorage", filename: Union[Pathy, str]) -> str:
+    def abspath(self: "CloudStorage", filename: Pathy) -> str:
         """Return absolute path."""
-        if isinstance(filename, str):
-            file = self.bucket / self.root_path / self.rel_path / filename
-        else:
-            file = filename
+        file = self._get_file(filename)
         return file.as_uri()
 
     def unlink(self: "CloudStorage", filename: Union[Pathy, str]) -> None:
         """Delete the file."""
-        if isinstance(filename, str):
-            file = self.bucket / self.root_path / self.rel_path / filename
-        else:
-            file = filename
+        file = self._get_file(filename)
         file.unlink()
 
 
