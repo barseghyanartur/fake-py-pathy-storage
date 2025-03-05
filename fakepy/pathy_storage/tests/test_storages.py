@@ -305,40 +305,74 @@ class TestStoragesTestCase(unittest.TestCase):
         # Assert does not exist
         self.assertFalse(storage.exists(filename_bytes.name))
 
-    def test_relpath_and_abspath(self):
+    @parametrize(
+        "storage_cls, kwargs, prefix, basename, extension",
+        [
+            # LocalFileSystemStorage
+            (
+                LocalFileSystemStorage,
+                {
+                    "bucket_name": "testing",
+                    "root_path": "",
+                    "rel_path": "",
+                },
+                None,
+                None,
+                "txt",
+            ),
+            # LocalFileSystemStorage
+            (
+                LocalFileSystemStorage,
+                {
+                    "bucket_name": "testing",
+                    "root_path": "root_tmp",
+                    "rel_path": "rel_tmp",
+                },
+                None,
+                None,
+                "txt",
+            ),
+        ],
+    )
+    def test_relpath_and_abspath(
+        self: "TestStoragesTestCase",
+        storage_cls: Type[CloudStorage],
+        kwargs: Dict[str, Any],
+        prefix: Union[str, None],
+        basename: Union[str, None],
+        extension: str,
+    ) -> None:
         use_fs(Path(tempfile.gettempdir()))
         use_fs_cache()
-        bucket_name = "testing"
+        bucket_name = kwargs.get("bucket_name")
+        root_path = kwargs.get("root_path")
+        rel_path = kwargs.get("rel_path")
 
-        storage = LocalFileSystemStorage(
-            bucket_name=bucket_name,
-            root_path="",
-            rel_path="",
-        )
-        filename = storage.generate_filename(extension="txt")
+        # --------------------------------------------------------------------
+        storage = storage_cls(**kwargs)
+        filename = storage.generate_filename(extension=extension)
+
         # Test relpath
-        self.assertEqual(storage.relpath(filename), filename.name)
+        expected_relpath_parts = []
+        if rel_path:
+            expected_relpath_parts.append(rel_path)
+        expected_relpath_parts.append(filename.name)
+        self.assertEqual(
+            storage.relpath(filename),
+            "/".join(expected_relpath_parts),
+        )
+
         # Test abspath
+        expected_abspath_parts = [f"file://{bucket_name}"]
+        if root_path:
+            expected_abspath_parts.append(root_path)
+        if rel_path:
+            expected_abspath_parts.append(rel_path)
+        expected_abspath_parts.append(filename.name)
+
         self.assertEqual(
             storage.abspath(filename),
-            f"file://{bucket_name}/{filename.name}",
-        )
-
-        storage_2 = LocalFileSystemStorage(
-            bucket_name=bucket_name,
-            root_path="root_tmp",
-            rel_path="rel_tmp",
-        )
-        filename_2 = storage.generate_filename(extension="txt")
-        # Test relpath
-        self.assertEqual(
-            storage_2.relpath(filename_2.name),
-            f"rel_tmp/{filename_2.name}",
-        )
-        # Test abspath
-        self.assertEqual(
-            storage_2.abspath(filename_2.name),
-            f"file://{bucket_name}/root_tmp/rel_tmp/{filename_2.name}",
+            "/".join(expected_abspath_parts),
         )
 
     @parametrize(
