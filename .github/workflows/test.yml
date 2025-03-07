@@ -39,7 +39,7 @@ jobs:
   # *************************************
   test:
     needs: pre-commit
-    name: test ${{ matrix.python-version }} - ${{ matrix.pathy-version }} - ${{ matrix.os }}
+    name: test py-${{ matrix.python-version }} - pathy-${{ matrix.pathy-version }} - ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
