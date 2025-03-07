@@ -6,7 +6,6 @@ calls the `clean_up` method of the `FILE_REGISTRY` instance.
 """
 
 import pytest
-from fake import FILE_REGISTRY
 
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2024 Artur Barseghyan"
@@ -44,6 +43,7 @@ def pytest_runtest_setup(item):
 def pytest_runtest_teardown(item, nextitem):
     """Clean up after test ends."""
     try:
+        from fake import FILE_REGISTRY
         from pytest_rst import RSTTestItem
 
         if isinstance(item, RSTTestItem):
