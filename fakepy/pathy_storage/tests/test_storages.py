@@ -261,7 +261,8 @@ class TestStoragesTestCase(unittest.TestCase):
         """Test storage."""
         # Just for testing purposes
         if issubclass(storage_cls, CloudStorage):
-            use_fs(Path(tempfile.gettempdir()))
+            # use_fs(Path(tempfile.gettempdir()))
+            use_fs(str(Path(tempfile.gettempdir())))
             use_fs_cache()
 
         storage = storage_cls(**kwargs)
@@ -342,7 +343,8 @@ class TestStoragesTestCase(unittest.TestCase):
         basename: Union[str, None],
         extension: str,
     ) -> None:
-        use_fs(Path(tempfile.gettempdir()))
+        # use_fs(Path(tempfile.gettempdir()))
+        use_fs(str(Path(tempfile.gettempdir())))
         use_fs_cache()
         bucket_name = kwargs.get("bucket_name")
         root_path = kwargs.get("root_path")

@@ -4,6 +4,8 @@ from typing import Any, Dict, Optional, Union
 from fake import BaseStorage
 from pathy import Pathy
 
+from .helpers import is_legacy_pathy_version
+
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2024-2025 Artur Barseghyan"
 __license__ = "MIT"
@@ -15,6 +17,7 @@ __all__ = (
 
 DEFAULT_ROOT_PATH = "tmp"
 DEFAULT_REL_PATH = "tmp"
+IS_LEGACY_PATHY_VERSION = is_legacy_pathy_version()
 
 
 class CloudStorage(BaseStorage):
@@ -97,11 +100,18 @@ class CloudStorage(BaseStorage):
         :param filename: File name.
         :return Pathy: File object.
         """
-        if isinstance(filename, str):
-            file = self.bucket / self.root_path / filename
-        else:
-            file = filename
-        return file
+        # if isinstance(filename, str):
+        #     file = self.bucket / self.root_path / filename
+        # else:
+        #     file = filename
+        # return file
+        if isinstance(filename, Pathy):
+            return filename
+        if isinstance(filename, str) and filename.startswith(
+            f"{self.schema}://"
+        ):
+            return Pathy(filename)
+        return self.bucket / self.root_path / filename
 
     def generate_filename(
         self: "CloudStorage",
@@ -179,6 +189,23 @@ class LocalFileSystemStorage(CloudStorage):
     """
 
     schema: str = "file"
+
+    if not IS_LEGACY_PATHY_VERSION:
+
+        def abspath(self: "LocalFileSystemStorage", filename: Pathy) -> str:
+            """Override `abspath` for local storage.
+
+            Instead of calling `as_uri()`, manually construct the absolute URI.
+            """
+            # Use the storage components to build the absolute URI.
+            parts = [self.bucket_name]
+            if self.root_path:
+                parts.append(self.root_path)
+            if self.rel_path:
+                parts.append(self.rel_path)
+            # Here we use filename.name as the final part.
+            parts.append(filename.name)
+            return "file://" + "/".join(parts)
 
     def authenticate(self: "LocalFileSystemStorage", **kwargs) -> None:
         """Authenticate. Does nothing."""
