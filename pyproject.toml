@@ -2,7 +2,7 @@
 name = "fake-py-pathy-storage"
 description = "Pathy storage for fake.py"
 readme = "README.rst"
-version = "0.1.3"
+version = "0.1.4"
 dependencies = [
     "fake.py>=0.9.5",
     "pathy>=0.10.0,<0.12.0",
