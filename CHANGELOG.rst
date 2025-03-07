@@ -1,5 +1,9 @@
 Release history and notes
 =========================
+.. Internal references
+
+.. _pathy: https://github.com/justindujardin/pathy
+.. _`International Women's Day`: https://en.wikipedia.org/wiki/International_Women%27s_Day
 
 `Sequence based identifiers
 <http://en.wikipedia.org/wiki/Software_versioning#Sequence-based_identifiers>`_
@@ -15,6 +19,18 @@ are used for versioning (schema follows below):
   release notes carefully before upgrading (for example, when upgrading from
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
+
+0.1.4
+-----
+2025-03-08
+
+.. note::
+
+    Dear women, congratulations with `International Women's Day`_!
+
+- Added Python 3.12 support.
+- Added `pathy`_ 0.11 support. Now this package supports both legacy (0.10.x)
+  and modern (0.11.x) versions of `pathy`_.
 
 0.1.3
 -----
