@@ -57,9 +57,9 @@ test = [
     "django",
     "parametrize",
     "pytest",
+    "pytest-codeblock",
     "pytest-cov",
     "pytest-django",
-    "pytest-rst",
 ]
 docs = [
     "sphinx<6.0",
