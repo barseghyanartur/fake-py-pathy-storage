@@ -2,7 +2,7 @@
 name = "fake-py-pathy-storage"
 description = "Pathy storage for fake.py"
 readme = "README.rst"
-version = "0.1.5"
+version = "0.1.6"
 dependencies = [
     "fake.py>=0.9.5",
     "pathy>=0.10.0,<0.12.0",
@@ -55,6 +55,7 @@ dev = [
 ]
 test = [
     "django",
+    "moto[s3]",
     "parametrize",
     "pytest",
     "pytest-codeblock",
@@ -190,9 +191,7 @@ testpaths = [
     "fakepy/pathy_storage_beta/",
     "tests.py",
     "test_*.py",
-    "*.rst",
     "**/*.rst",
-    "docs/*.rst",
 ]
 pythonpath = [
     ".",

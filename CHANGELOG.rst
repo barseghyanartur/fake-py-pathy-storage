@@ -4,6 +4,7 @@ Release history and notes
 
 .. _pathy: https://github.com/justindujardin/pathy
 .. _`International Women's Day`: https://en.wikipedia.org/wiki/International_Women%27s_Day
+.. _pytest-codeblock: https://github.com/barseghyanartur/pytest-codeblock
 
 `Sequence based identifiers
 <http://en.wikipedia.org/wiki/Software_versioning#Sequence-based_identifiers>`_
@@ -19,6 +20,13 @@ are used for versioning (schema follows below):
   release notes carefully before upgrading (for example, when upgrading from
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
+
+0.1.6
+-----
+2025-05-04
+
+- Switch to `pytest-codeblock`_ for testing documentation codeblocks.
+- Improve documentation and tests.
 
 0.1.5
 -----
