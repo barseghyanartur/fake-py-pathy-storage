@@ -88,7 +88,9 @@ Local cloud-alike file system storage
 AWS S3
 ------
 
+.. pytestmark: aws
 .. code-block:: python
+    :name: test_pathy_aws_s3_storage
 
     from fake import FAKER
     from fakepy.pathy_storage.aws_s3 import AWSS3Storage
@@ -112,7 +114,10 @@ AWS S3
 
 Google Cloud Storage
 --------------------
+
+.. pytestmark: google_cloud_storage
 .. code-block:: python
+    :name: test_pathy_google_cloud_storage
 
     from fake import FAKER
     from fakepy.pathy_storage.google_cloud_storage import GoogleCloudStorage
@@ -129,7 +134,10 @@ Google Cloud Storage
 
 Azure Cloud Storage
 -------------------
+
+.. pytestmark: azure_cloud_storage
 .. code-block:: python
+    :name: test_pathy_azure_cloud_storage
 
     from fake import FAKER
     from fakepy.pathy_storage.azure_cloud_storage import AzureCloudStorage
