@@ -13,11 +13,10 @@ authors = [
 maintainers = [
     {name = "Artur Barseghyan", email = "artur.barseghyan@gmail.com"},
 ]
-license = {text = "MIT"}
+license = "MIT"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
@@ -42,6 +41,7 @@ Changelog = "https://fake-py-pathy-storage.readthedocs.io/en/latest/changelog.ht
 all = ["fake-py-pathy-storage[gcs,s3,azure,dev,test,docs]"]
 dev = [
     "black",
+    "build",
     "detect-secrets",
     "doc8",
     "ipython",
@@ -52,6 +52,7 @@ dev = [
     "ruff",
     "twine",
     "uv",
+    "wheel",
 ]
 test = [
     "django",
@@ -81,7 +82,10 @@ azure = [
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["fakepy.pathy_storage"]
+include = [
+    "fakepy.pathy_storage",
+    "fakepy.pathy_storage.tests",
+]
 namespaces = true
 
 # Build system information below.

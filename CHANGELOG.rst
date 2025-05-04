@@ -27,6 +27,7 @@ are used for versioning (schema follows below):
 
 - Switch to `pytest-codeblock`_ for testing documentation codeblocks.
 - Improve documentation and tests.
+- Upgrade pyproject.toml to the new licenses standards.
 
 0.1.5
 -----
