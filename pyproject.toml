@@ -41,6 +41,7 @@ Changelog = "https://fake-py-pathy-storage.readthedocs.io/en/latest/changelog.ht
 all = ["fake-py-pathy-storage[gcs,s3,azure,dev,test,docs]"]
 dev = [
     "black",
+    "build",
     "detect-secrets",
     "doc8",
     "ipython",
@@ -51,6 +52,7 @@ dev = [
     "ruff",
     "twine",
     "uv",
+    "wheel",
 ]
 test = [
     "django",
@@ -80,7 +82,10 @@ azure = [
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["fakepy.pathy_storage"]
+include = [
+    "fakepy.pathy_storage",
+    "fakepy.pathy_storage.tests",
+]
 namespaces = true
 
 # Build system information below.
