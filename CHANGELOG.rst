@@ -21,6 +21,13 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.1.7
+-----
+2025-03-06
+
+- Stop testing against Python 3.9.
+- Test against Python 3.14.
+
 0.1.6
 -----
 2025-05-04
