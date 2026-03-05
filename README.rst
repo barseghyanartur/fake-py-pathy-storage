@@ -32,6 +32,10 @@ fake-py-pathy-storage
     :target: http://fake-py-pathy-storage.readthedocs.io
     :alt: Documentation Status
 
+.. image:: https://img.shields.io/badge/docs-llms.txt-blue
+    :target: http://fake-py-pathy-storage.readthedocs.io/en/latest/llms.txt
+    :alt: llms.txt - documentation for LLMs
+
 .. image:: https://img.shields.io/badge/license-MIT-blue.svg
    :target: https://github.com/barseghyanartur/fake-py-pathy-storage/#License
    :alt: MIT
