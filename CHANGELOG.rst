@@ -23,7 +23,7 @@ are used for versioning (schema follows below):
 
 0.1.7
 -----
-2025-03-06
+2026-03-06
 
 - Stop testing against Python 3.9.
 - Test against Python 3.14.
