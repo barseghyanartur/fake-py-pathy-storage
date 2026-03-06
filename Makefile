@@ -60,7 +60,7 @@ create-venv:
 
 # Install the project
 install: create-venv
-	source $(VENV) && pip install -e .[all]
+	source $(VENV) && uv pip install -e .[all]
 
 # ----------------------------------------------------------------------------
 # Tests
